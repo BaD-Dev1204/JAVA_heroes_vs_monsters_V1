@@ -14,10 +14,7 @@
 * gold : int
 * level : int
 * xp : int
-
-Methods:
-
-* gainXP(xp)
+* skills : List<HeroSkill>
 
 ---
 
@@ -27,9 +24,8 @@ Methods:
 
 * Bonus: +hp, +strength
 * Skills:
-
-  * block()
-  * protect()
+  * BlockSkill()
+  * ProtectSkill()
 
 ---
 
@@ -37,9 +33,8 @@ Methods:
 
 * Bonus: +speed
 * Skills:
-
-  * rapidShot()
-  * dodge()
+  * RapidShotSkill()
+  * DodgeSkill()
 
 ---
 
@@ -47,9 +42,8 @@ Methods:
 
 * Bonus: +magic power (or adapt with strength)
 * Skills:
-
-  * castSpell()
-  * areaAttack()
+  * CastSpellSkill()
+  * AreaAttackSkill()
 
 ---
 
@@ -57,33 +51,34 @@ Methods:
 
 * Bonus: balanced / speed
 * Skills:
-
-  * quickStrike()
-  * meditate()
+  * QuickStrikeSkill()
+  * MeditateSkill()
 
 ---
 
 ## MONSTER (inherits from Character)
 
 * dropChance : int
+* skills : List<MonsterSkill>
 
 ---
 
 ## GOBLIN (inherits from Monster)
 
 * Specificity:
-
   * Can drop a gold pouch (chance)
 
 Subclasses:
 
 ### Archer
 
-* rangedAttack()
+* Skills:
+  * RangedAttackSkill()
 
 ### Assassin
 
-* stealthAttack()
+* Skills:
+  * StealthAttackSkill()
 
 ---
 
@@ -93,12 +88,29 @@ Subclasses:
 
 ### Spearman
 
-* longRangeAttack()
+* Skills:
+  * LongRangeAttackSkill()
 
 ### Guardian
 
-* protect()
-* block()
+* Skills:
+  * ProtectSkill()
+  * BlockSkill()
+
+---
+
+## SKILLS SYSTEM
+
+### Base class: Skill
+* name : string
+* description : string
+
+### HeroSkill (inherits from Skill)
+* Can override use() for hero-specific effects
+
+### MonsterSkill (inherits from Skill)
+* Can override use() for monster-specific effects
+* Allows monsters to have skills that behave differently from heroes
 
 ---
 
@@ -106,6 +118,7 @@ Subclasses:
 
 * Each character has base stats
 * Each class applies bonuses
+* Characters have a list of skills
 * Monsters can drop loot
 * Combat is turn-based and based on speed
 * The guardian protects the spearman (synergy)
