@@ -2,7 +2,8 @@
 
 ## CHARACTER (base class)
 
-* hp : int
+* maxHp : int
+* currentHp
 * strength : int
 * speed : int
 * luck : int
