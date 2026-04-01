@@ -7,11 +7,6 @@
 * speed : int
 * luck : int
 
-Methods:
-
-* attack(target)
-* takeDamage(dmg)
-
 ---
 
 ## HERO (inherits from Character)
@@ -71,11 +66,6 @@ Methods:
 ## MONSTER (inherits from Character)
 
 * dropChance : int
-
-Methods:
-
-* die()
-* attack()
 
 ---
 
