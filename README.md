@@ -1,104 +1,121 @@
 # Heroes Vs Monsters
 
-## PERSONNAGE (classe de base)
+## CHARACTER (base class)
 
-* pv : int
-* force : int
-* vitesse : int
-* chance : int
+* hp : int
+* strength : int
+* speed : int
+* luck : int
 
-Méthodes :
+Methods:
 
-* attaquer(cible)
-* recevoirDegats(dmg)
+* attack(target)
+* takeDamage(dmg)
 
-## HERO (hérite de Personnage)
+---
 
-* or : int
-* niveau : int
+## HERO (inherits from Character)
+
+* gold : int
+* level : int
 * xp : int
 
-Méthodes :
+Methods:
 
-* gagnerXP(xp)
+* gainXP(xp)
 
-## CLASSES DE HERO (héritent de Hero)
+---
 
-Chevalier
+## HERO CLASSES (inherit from Hero)
 
-* Bonus : +pv, +force
-* Compétences :
+### Knight
 
-  * bloquer()
-  * proteger()
+* Bonus: +hp, +strength
+* Skills:
 
-Elfe
+  * block()
+  * protect()
 
-* Bonus : +vitesse
-* Compétences :
+---
 
-  * tirRapide()
-  * esquive()
+### Elf
 
-Sorcier
+* Bonus: +speed
+* Skills:
 
-* Bonus : +force magique (ou adapter avec force)
-* Compétences :
+  * rapidShot()
+  * dodge()
 
-  * lancerSort()
-  * attaqueZone()
+---
 
-Moine
+### Sorcerer
 
-* Bonus : équilibré / vitesse
-* Compétences :
+* Bonus: +magic power (or adapt with strength)
+* Skills:
 
-  * coupRapide()
-  * meditation()
+  * castSpell()
+  * areaAttack()
 
-## MONSTRE (hérite de Personnage)
+---
 
-* chanceDrop : int
+### Monk
 
-Méthodes :
+* Bonus: balanced / speed
+* Skills:
 
-* mourir()
-* attaquer()
+  * quickStrike()
+  * meditate()
 
-## GOBELIN (hérite de Monstre)
+---
 
-* Spécificité :
+## MONSTER (inherits from Character)
 
-  * Peut lâcher une bourse d’or (chance)
+* dropChance : int
 
-Sous-classes :
-Archer
+Methods:
 
-* attaqueDistance()
+* die()
+* attack()
 
-Assassin
+---
 
-* attaqueFurtive()
+## GOBLIN (inherits from Monster)
 
-## ORC (hérite de Monstre)
+* Specificity:
 
-Sous-classes :
+  * Can drop a gold pouch (chance)
 
-Lancier
+Subclasses:
 
-* attaqueLonguePortee()
+### Archer
 
-Gardien
+* rangedAttack()
 
-* proteger()
-* bloquer()
+### Assassin
 
-## MECANIQUES DE JEU
+* stealthAttack()
 
-* Chaque personnage a des stats de base
-* Chaque classe applique des bonus
-* Les monstres peuvent drop du loot
-* Le combat est au tour par tour basé sur vitesse
-* Le gardien protège le lancier (synergie)
+---
 
+## ORC (inherits from Monster)
 
+Subclasses:
+
+### Spearman
+
+* longRangeAttack()
+
+### Guardian
+
+* protect()
+* block()
+
+---
+
+## GAME MECHANICS
+
+* Each character has base stats
+* Each class applies bonuses
+* Monsters can drop loot
+* Combat is turn-based and based on speed
+* The guardian protects the spearman (synergy)
