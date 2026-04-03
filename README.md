@@ -1,19 +1,48 @@
 # 🏰 Heroes vs monsters
 
-## Classes de base
+## Personnage
 
 ### **Character**
-- Propriétés : `maxHp`, `currentHp`, `strength`, `speed`, `luck`  
+- Propriétés : `maxHp`, `currentHp`, `strength`, `speed`, `luck`, bonus de stats 
 - Méthodes : `takeDamage(int dmg)`  
 
+---
+
+##  Hero
+
 ### **Hero** (hérite de `Character`)
-- Propriétés : `gold`, `level`, `xp`, bonus de stats  
+- Propriétés : `gold`, `level`, `xp`  
 - Méthodes : `gainXp(int xp)`, `levelUp()`, `getHeroSkills()`, `setHeroSkills(List<Skill>)`  
 - Contient une **liste de skills** (`List<Skill>`)
 
+---
+
+## Heros spécifique
+
 ### **Knight** (hérite de `Hero`)
-- Bonus spécifiques : `bonusMaxHp`, `bonusStrength`  
-- Skills ajoutés dans le constructeur, ex : `CrushingSlash`
+- Bonus spécifiques :
+  - `bonusMaxHp`
+  - `bonusStrength`
+- Skills ajoutés dans le constructeur, ex : `CrushingSlash`  
+
+---
+
+##  Monstre
+
+### **Monster** (hérite de `Character`)
+- Propriétés :
+  - liste de loot (`List<Item>`)
+
+---
+
+## Monstres spécifique
+
+### **Goblin** (hérite de `Monster`)
+- Monstre rapide et chanceux  
+- Bonus spécifiques :
+  - `bonusSpeed`
+  - `bonusLuck`
+- Peut drop du loot (ex : item)
 
 ---
 
@@ -74,6 +103,101 @@ this.getEffects().add(damageEffect);
 
 ---
 
+## Système d’Item
+
+### Item (classe de base)
+**Propriétés :**
+- `name`
+- `description`
+- `goldValue`  
+
+_Représente un objet générique du jeu_
+
+### Types d’items
+
+#### Equipment (hérite de Item)
+- Donne des bonus de stats
+- Peut être équipé  
+**Exemples :**
+- `Sword` → +strength
+- `Armor` → +hp
+
+#### Consumable (hérite de Item)
+- Utilisable une seule fois
+- Applique un effet  
+**Exemples :**
+- `Potion` → heal
+- `Elixir` → boost temporaire
+
+#### Material / LootItem (hérite de Item)
+- Pas d’effet direct
+- Sert pour :
+  - vente
+  - crafting
+  - quêtes
+
+---
+
+## Système de Loot
+
+### Loot (abstrait)
+**Propriétés :**
+- `dropChance`  
+
+**Méthode :**
+- `roll()` → détermine si le loot est obtenu
+
+### ItemLoot (hérite de Loot)
+- Contient :
+  - un `Item`
+  - une quantité (optionnel)  
+_Permet de drop un objet_
+
+### GoldLoot (hérite de Loot)
+- Contient :
+  - `minGold`
+  - `maxGold`  
+_Permet de générer une quantité d’or_
+
+### LootTable
+- Contient : `List<Loot>`  
+**Méthode :**
+- génère les récompenses après la mort du monstre
+
+---
+
+# Flux du loot
+
+1. Monster meurt  
+   → `LootTable.generateLoot()`  
+     → retourne :
+     - gold
+     - items  
+2. Hero reçoit :  
+   - ajoute gold
+   - ajoute items dans `inventory`
+
+---
+
+## Inventory
+
+### Inventory
+- Contient : liste ou map d’`Item`  
+
+**Responsabilités :**
+- ajouter un item
+- gérer les stacks (quantité)
+- retirer un item
+
+---
+
+# 🧠 Règles importantes
+- Le gold n’est **PAS** un Item
+- Le gold est stocké directement dans : `Hero.gold`
+- L’inventaire contient uniquement des objets
+
+---
+
 ## Diagramme : architecture complète
 
 ```mermaid
@@ -85,6 +209,10 @@ classDiagram
         - int strength
         - int speed
         - int luck
+        - int bonusMaxHp
+        - int bonusStrength
+        - int bonusSpeed
+        - int bonusLuck
         + takeDamage(int dmg)
     }
 
@@ -92,10 +220,6 @@ classDiagram
         - int gold
         - int level
         - int xp
-        - int bonusMaxHp
-        - int bonusStrength
-        - int bonusSpeed
-        - int bonusLuck
         - List<Skill> skills
         + gainXp(int xp)
         + levelUp()
@@ -108,8 +232,20 @@ classDiagram
         + getHeroSkills().add(new Slash())
     }
 
+    class Monster {
+        -List<Item> loot
+    }
+
+    class Goblin {
+        - bonusSpeed()
+        - bonusLuck()
+        + getMonsterSkills().add(new Slash())
+    }
+
     Character <|-- Hero
+    Character <|-- Monster
     Hero <|-- Knight
+    Monster <|-- Goblin
 
     %% ======= Skills =======
     class Skill {
@@ -120,6 +256,7 @@ classDiagram
     }
 
     Hero --> "1..*" Skill : has
+    Monster --> "1..*" Skill : has
 
     %% ======= Effects =======
     class IEffect {
